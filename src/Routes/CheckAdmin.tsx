@@ -6,8 +6,8 @@ interface CheckAdminProps {
 }
 
 const CheckAdmin: FC<CheckAdminProps> = ({ page }) => {
-	const isAdmin: boolean = false;
-	const isAuthenticated: boolean = false;
+	const isAdmin: boolean = true;
+	const isAuthenticated: boolean = true;
 
 	if (isAdmin && isAuthenticated) {
 		return page;
