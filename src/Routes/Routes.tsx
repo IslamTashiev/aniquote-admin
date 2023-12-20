@@ -5,6 +5,7 @@ import Layout from "../layouts";
 import React from "react";
 import Home from "../pages/Home";
 import Page from "../pages/Page";
+import Quotes from "../pages/Quotes";
 
 const Routes = () => {
 	const renderPageWithLayout = (component: React.ReactNode) => {
@@ -20,6 +21,7 @@ const Routes = () => {
 			<Route path='/login' element={<Login />} />
 			<Route path='/' element={renderPageWithLayout(<Home />)} />
 			<Route path='/pages' element={renderPageWithLayout(<Page />)} />
+			<Route path='/quotes' element={renderPageWithLayout(<Quotes />)} />
 		</ReoutesLib>
 	);
 };
