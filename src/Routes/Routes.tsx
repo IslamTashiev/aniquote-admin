@@ -3,6 +3,7 @@ import CheckAdmin from "./CheckAdmin";
 import Login from "../pages/Login";
 import Layout from "../layouts";
 import React from "react";
+import Home from "../pages/Home";
 
 const Routes = () => {
 	const renderPageWithLayout = (component: React.ReactNode) => {
@@ -16,7 +17,7 @@ const Routes = () => {
 	return (
 		<ReoutesLib>
 			<Route path='/login' element={<Login />} />
-			<Route path='/' element={renderPageWithLayout(<>Home page</>)} />
+			<Route path='/' element={renderPageWithLayout(<Home />)} />
 		</ReoutesLib>
 	);
 };
