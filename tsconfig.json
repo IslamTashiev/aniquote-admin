@@ -22,7 +22,9 @@
 
     "paths": {
       "@utils/*": ["./src/utils/*"],
-      "@assets/*": ["./src/assets/*"]
+      "@assets/*": ["./src/assets/*"],
+      "@models/*": ["./src/models/*"],
+      "@api/*": ["./src/api/*"],
     },
     "types": ["vite-plugin-svgr/client"]
   },
