@@ -7,6 +7,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@utils": "/src/utils",
+			"@assets": "/src/assets",
 		},
 	},
 });
