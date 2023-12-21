@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { cn } from "@utils/cn";
 import { useNavigate } from "react-router";
 
+import PagesIcon from "@assets/sidebar-page.svg";
+import QuotesIcon from "@assets/sidebar-quotes.svg";
+import StatsIcon from "@assets/sidebar-stats.svg";
+import LogoutIcon from "@assets/logout.svg";
+
 const listItems = [
-	{ title: "Pages", icon: <></>, path: "/pages" },
-	{ title: "Quotes", icon: <></>, path: "/quotes" },
-	{ title: "Statistic", icon: <></>, path: "/statistic" },
+	{ title: "Pages", icon: <PagesIcon />, path: "/pages" },
+	{ title: "Quotes", icon: <QuotesIcon />, path: "/quotes" },
+	{ title: "Statistic", icon: <StatsIcon />, path: "/statistic" },
 ];
 
 const Sidebar: React.FC = () => {
@@ -37,7 +42,10 @@ const Sidebar: React.FC = () => {
 				</ul>
 			</div>
 			<div className='p-3'>
-				<button className='bg-[#9fa2b44a] w-full py-2 rounded text-white'>Logout</button>
+				<button className='bg-[#9fa2b44a] w-full py-2 rounded text-[#A4A6B3] flex items-center justify-center gap-2'>
+					<LogoutIcon />
+					Logout
+				</button>
 			</div>
 		</div>
 	);
