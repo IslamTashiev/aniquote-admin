@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, useRef } from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "@utils/cn";
 
 const Login: React.FC = () => {
 	const [email, setEmail] = useState<string>("");
