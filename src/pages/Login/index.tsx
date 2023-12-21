@@ -1,5 +1,16 @@
 import React, { useState, ChangeEvent, useRef } from "react";
 import { cn } from "@utils/cn";
+import { useUserStore } from "../../store/userStore/userStore";
+import { Navigate } from "react-router-dom";
+
+const validateEmail = (email: string): boolean => {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+};
+
+const validatePassword = (password: string): boolean => {
+	return password.length >= 4 && password.length <= 15;
+};
 
 const Login: React.FC = () => {
 	const [email, setEmail] = useState<string>("");
@@ -9,7 +20,9 @@ const Login: React.FC = () => {
 	const emailInputRef = useRef<HTMLInputElement>(null);
 	const passwordInputRef = useRef<HTMLInputElement>(null);
 
-	const handleSubmit = () => {
+	const { login, isAuthenticated } = useUserStore((state) => state);
+
+	const handleSubmit = async () => {
 		if (!email || !validateEmail(email)) {
 			setEmailError("Please enter a valid email address");
 			if (emailInputRef.current) {
@@ -26,17 +39,10 @@ const Login: React.FC = () => {
 			return;
 		}
 
-		// логика для отправки данных формы
+		login(email, password);
 	};
 
-	const validateEmail = (email: string): boolean => {
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailRegex.test(email);
-	};
-
-	const validatePassword = (password: string): boolean => {
-		return password.length >= 4 && password.length <= 15;
-	};
+	if (isAuthenticated) return <Navigate to='/' />;
 
 	return (
 		<div className={cn("w-full h-screen flex items-center justify-center")}>

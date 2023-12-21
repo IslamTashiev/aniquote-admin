@@ -1,4 +1,5 @@
 import { Routes as ReoutesLib, Route } from "react-router-dom";
+import { useUserStore } from "../store/userStore/userStore";
 import CheckAdmin from "./CheckAdmin";
 import Login from "../pages/Login";
 import Layout from "../layouts";
@@ -8,10 +9,13 @@ import Page from "../pages/Page";
 import Quotes from "../pages/Quotes";
 
 const Routes = () => {
+	const { isAuthenticated, user } = useUserStore((state) => state);
+	const isAdmin: boolean = user?.role === "ADMIN";
+
 	const renderPageWithLayout = (component: React.ReactNode) => {
 		return (
 			<Layout>
-				<CheckAdmin page={component} />
+				<CheckAdmin page={component} isAuthenticated={isAuthenticated} isAdmin={isAdmin} />
 			</Layout>
 		);
 	};
