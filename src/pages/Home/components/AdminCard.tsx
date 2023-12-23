@@ -1,8 +1,9 @@
+import React, { FC, useState } from "react";
 import DeleteIcon from "@assets/close.svg";
 import { IUser } from "@models/user";
 import { useAppStore } from "@store/appStore";
 import { useUserStore } from "@store/userStore/userStore";
-import React, { FC } from "react";
+import ConfirmModal from "./ConfirmModal"; // Путь к вашему компоненту ConfirmModal
 
 interface AdminCardProps {
 	admin: IUser;
@@ -13,9 +14,17 @@ const AdminCard: FC<AdminCardProps> = ({ admin }) => {
 	const { removeAdmin } = useAppStore((state) => state);
 	const isCurrentAdmin = user?._id !== admin._id;
 
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
 	const handleDeleteAdmin = () => {
-		const isConfirm = confirm(`Are you sure you want to delete ${admin.fullName}?`);
-		if (isConfirm) removeAdmin(admin._id);
+		setIsDeleteModalOpen(true);
+	};
+	const confirmDelete = () => {
+		removeAdmin(admin._id);
+		setIsDeleteModalOpen(false);
+	};
+	const closeModal = () => {
+		setIsDeleteModalOpen(false);
 	};
 
 	return (
@@ -30,6 +39,8 @@ const AdminCard: FC<AdminCardProps> = ({ admin }) => {
 				{admin.fullName} {!isCurrentAdmin && <span className='text-blue-600'>(You)</span>}
 			</p>
 			<span className='text-gray-500'>{admin.role}</span>
+
+			<ConfirmModal isOpen={isDeleteModalOpen} onClose={closeModal} onConfirm={confirmDelete} title={`Delete ${admin.fullName}?`} message={`Are you sure you want to delete ${admin.fullName}?`} />
 		</div>
 	);
 };
