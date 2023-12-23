@@ -25,8 +25,12 @@ export const useUserStore = create<IUserStore>((set) => ({
 		userActions.logout();
 	},
 	refresh: async () => {
-		set({ isAuthenticated: false, user: null, isUserLoaded: false });
-		const data = await userActions.refresh();
-		set({ isAuthenticated: true, user: data, isUserLoaded: true });
+		if (localStorage.getItem("token")) {
+			set({ isAuthenticated: false, user: null, isUserLoaded: false });
+			const data = await userActions.refresh();
+			set({ isAuthenticated: true, user: data, isUserLoaded: true });
+		} else {
+			set({ isAuthenticated: false, user: null, isUserLoaded: true });
+		}
 	},
 }));

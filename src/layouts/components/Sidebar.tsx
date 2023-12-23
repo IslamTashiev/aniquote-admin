@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { cn } from "@utils/cn";
 import { useNavigate } from "react-router";
+import { useUserStore } from "../../store/userStore/userStore";
 
 import PagesIcon from "@assets/sidebar-page.svg";
 import QuotesIcon from "@assets/sidebar-quotes.svg";
@@ -16,6 +17,7 @@ const listItems = [
 const Sidebar: React.FC = () => {
 	const [activeElement, setActiveElement] = useState<number | null>(null);
 
+	const { logout } = useUserStore((state) => state);
 	const navigate = useNavigate();
 
 	const onListItemClick = (index: number) => {
@@ -42,7 +44,7 @@ const Sidebar: React.FC = () => {
 				</ul>
 			</div>
 			<div className='p-3'>
-				<button className='bg-[#9fa2b44a] w-full py-2 rounded text-[#A4A6B3] flex items-center justify-center gap-2'>
+				<button onClick={logout} className='bg-[#9fa2b44a] w-full py-2 rounded text-[#A4A6B3] flex items-center justify-center gap-2'>
 					<LogoutIcon />
 					Logout
 				</button>

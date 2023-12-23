@@ -8,10 +8,7 @@ function App() {
 	const { refresh, isUserLoaded } = useUserStore((state) => state);
 
 	useEffect(() => {
-		const token = localStorage.getItem("token");
-		if (token) {
-			refresh();
-		}
+		refresh();
 	}, [refresh]);
 
 	if (!isUserLoaded) {
