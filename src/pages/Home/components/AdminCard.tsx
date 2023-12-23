@@ -3,7 +3,7 @@ import DeleteIcon from "@assets/close.svg";
 import { IUser } from "@models/user";
 import { useAppStore } from "@store/appStore";
 import { useUserStore } from "@store/userStore/userStore";
-import ConfirmModal from "./ConfirmModal"; // Путь к вашему компоненту ConfirmModal
+import ConfirmModal from "./ConfirmModal";
 
 interface AdminCardProps {
 	admin: IUser;

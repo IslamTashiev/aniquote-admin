@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import Modal from "../../../components/Modal"; // Путь к вашему компоненту Modal
+import Modal from "@components/Modal"; // Путь к вашему компоненту Modal
 
 interface ConfirmModalProps {
 	isOpen: boolean;

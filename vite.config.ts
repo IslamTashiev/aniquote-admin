@@ -12,6 +12,7 @@ export default defineConfig({
 			"@models": "/src/models",
 			"@api": "/src/api",
 			"@store": "/src/store",
+			"@components": "/src/components",
 		},
 	},
 });
