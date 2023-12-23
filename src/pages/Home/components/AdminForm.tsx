@@ -1,14 +1,8 @@
+import { FormData } from "@models/newAdmin";
 import React, { FC, useState } from "react";
 
 interface AdminFormProps {
 	onSubmit: (formData: FormData) => void;
-}
-
-export interface FormData {
-	fullName: string;
-	email: string;
-	password: string;
-	role: string;
 }
 
 const AdminForm: FC<AdminFormProps> = ({ onSubmit }) => {

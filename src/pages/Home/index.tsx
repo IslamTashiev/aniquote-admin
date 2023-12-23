@@ -3,13 +3,15 @@ import { useAppStore } from "@store/appStore";
 import Modal from "@components/Modal";
 import AddIcon from "@assets/add-admin.svg";
 import AdminsList from "./components/AdminsList";
-import AdminForm, { FormData } from "./components/AdminForm";
+import AdminForm from "./components/AdminForm";
+import { FormData } from "@models/newAdmin";
 
 const Home = () => {
-	const { adminsList, getAdminsList } = useAppStore((state) => state);
+	const { adminsList, getAdminsList, createNewAdmin } = useAppStore((state) => state);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const handleSubmit = (formData: FormData) => {
+		createNewAdmin(formData);
 		setIsModalOpen(false);
 	};
 
