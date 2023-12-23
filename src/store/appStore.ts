@@ -6,6 +6,7 @@ interface IAppStore {
 	adminsList: IUser[];
 	isAdminsLoaded: boolean;
 	getAdminsList: () => void;
+	removeAdmin: (id: string) => void;
 }
 
 export const useAppStore = create<IAppStore>((set, get) => ({
@@ -15,5 +16,9 @@ export const useAppStore = create<IAppStore>((set, get) => ({
 		set({ isAdminsLoaded: false, adminsList: [] });
 		const data = await appActions.getAdminsList();
 		set({ isAdminsLoaded: true, adminsList: data });
+	},
+	removeAdmin: async (id: string) => {
+		await appActions.removeAdmin(id);
+		get().getAdminsList();
 	},
 }));
