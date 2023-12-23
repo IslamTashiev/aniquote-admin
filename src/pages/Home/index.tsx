@@ -5,9 +5,10 @@ import AddIcon from "@assets/add-admin.svg";
 import AdminsList from "./components/AdminsList";
 import AdminForm from "./components/AdminForm";
 import { FormData } from "@models/newAdmin";
+import Loader from "@components/Loader/Loader";
 
 const Home = () => {
-	const { adminsList, getAdminsList, createNewAdmin } = useAppStore((state) => state);
+	const { adminsList, getAdminsList, createNewAdmin, isAdminsLoaded } = useAppStore((state) => state);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const handleSubmit = (formData: FormData) => {
@@ -18,6 +19,8 @@ const Home = () => {
 	useEffect(() => {
 		getAdminsList();
 	}, [getAdminsList]);
+
+	if (!isAdminsLoaded) return <Loader />;
 
 	return (
 		<div className='px-12 mt-5'>

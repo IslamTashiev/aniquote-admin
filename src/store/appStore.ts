@@ -20,10 +20,12 @@ export const useAppStore = create<IAppStore>((set, get) => ({
 		set({ isAdminsLoaded: true, adminsList: data });
 	},
 	removeAdmin: async (id: string) => {
+		set({ isAdminsLoaded: false });
 		await appActions.removeAdmin(id);
 		get().getAdminsList();
 	},
 	createNewAdmin: async (params: FormData) => {
+		set({ isAdminsLoaded: false });
 		await appActions.createNewAdmin(params);
 		get().getAdminsList();
 	},
