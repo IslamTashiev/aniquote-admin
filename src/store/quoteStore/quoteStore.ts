@@ -1,4 +1,4 @@
-import { IQuotes } from "@models/quotes";
+import { IQuoteForm, IQuotes } from "@models/quotes";
 import create from "zustand";
 import * as quoteActions from "./quoteActions";
 
@@ -10,6 +10,7 @@ interface IQuoteStore {
 	getQuotes: () => void;
 	nextPage: () => void;
 	prevPage: () => void;
+	addNewQuote: (data: IQuoteForm) => void;
 }
 
 export const useQuoteStore = create<IQuoteStore>((set, get) => ({
@@ -29,6 +30,10 @@ export const useQuoteStore = create<IQuoteStore>((set, get) => ({
 	},
 	prevPage: () => {
 		set((state) => ({ page: state.page - 1 }));
+		get().getQuotes();
+	},
+	addNewQuote: async (data: IQuoteForm) => {
+		await quoteActions.addNewQuote(data);
 		get().getQuotes();
 	},
 }));

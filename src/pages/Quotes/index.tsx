@@ -4,10 +4,20 @@ import List from "@components/List";
 import Pagination from "@components/Pagination";
 import { useQuoteStore } from "@store/quoteStore/quoteStore";
 import { IQuoteDto, QuoteDto } from "../../dtos/quoteDto";
+import Modal from "@components/Modal";
+import CreateQuoteForm from "./components/CreateQuoteForm";
+import { IQuoteForm } from "@models/quotes";
 
 const Quotes = () => {
-	const { getQuotes, quotes, nextPage, prevPage, page, quotesIsLoaded } = useQuoteStore((state) => state);
 	const [quotesList, setQuotesList] = useState<IQuoteDto[]>([]);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const { getQuotes, quotes, nextPage, prevPage, page, quotesIsLoaded, addNewQuote } = useQuoteStore((state) => state);
+
+	const handleSubmit = (formData: IQuoteForm) => {
+		addNewQuote(formData);
+		setIsModalOpen(false);
+	};
 
 	useEffect(() => {
 		getQuotes();
@@ -24,9 +34,12 @@ const Quotes = () => {
 					Total: <span className='text-blue-500 font-medium'>{quotes?.totalDocuments}</span> quotes
 				</p>
 			</div>
-			<Header />
+			<Header addButtonHandler={() => setIsModalOpen(true)} />
 			<List items={quotesList} listIsLoaded={quotesIsLoaded} />
 			<Pagination isLoading={quotesIsLoaded} currentPage={page} nextPage={nextPage} prevPage={prevPage} totalPages={quotes?.totalPages || 10} />
+			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title='Create new quote'>
+				<CreateQuoteForm onSubmit={handleSubmit} />
+			</Modal>
 		</div>
 	);
 };

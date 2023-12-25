@@ -5,16 +5,21 @@ import FiltersIcon from "@assets/filters.svg";
 import AddIcon from "@assets/add-item.svg";
 import SearchIcon from "@assets/search.svg";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+	filtersButtonHandler?: () => void;
+	addButtonHandler?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ addButtonHandler, filtersButtonHandler }) => {
 	return (
 		<div className={cn("flex items-center justify-between w-full")}>
 			<div className={cn("flex")}>
-				<button className={cn("flex items-center bg-gray-200 px-3 py-2 rounded-lg mr-2")}>
+				<button onClick={filtersButtonHandler} className={cn("flex items-center bg-gray-200 px-3 py-2 rounded-lg mr-2")}>
 					<FiltersIcon />
 					Filters
 				</button>
 
-				<button className={cn("flex items-center bg-blue-500 text-white px-3 py-2 rounded-lg")}>
+				<button onClick={addButtonHandler} className={cn("flex items-center bg-blue-500 text-white px-3 py-2 rounded-lg")}>
 					<AddIcon />
 					Add new item
 				</button>

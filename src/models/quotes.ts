@@ -11,3 +11,10 @@ export interface IQuote {
 	_id: string;
 	anime: string;
 }
+
+export interface IQuoteForm {
+	quote: string;
+	character: string;
+	anime: string;
+	animePhotoURL: string;
+}
