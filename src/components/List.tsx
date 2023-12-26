@@ -9,9 +9,11 @@ import DeleteIcon from "@assets/delete.svg";
 interface ListProps {
 	items: IQuoteDto[];
 	listIsLoaded: boolean;
+	onDelete?: (id: string) => void;
+	onEdit?: (id: string) => void;
 }
 
-const List: React.FC<ListProps> = ({ items, listIsLoaded }) => {
+const List: React.FC<ListProps> = ({ items, listIsLoaded, onDelete, onEdit }) => {
 	if (!listIsLoaded) {
 		return (
 			<div className='bg-white mt-3 shadow-2xl rounded-lg border border-gray-300 h-96'>
@@ -30,11 +32,11 @@ const List: React.FC<ListProps> = ({ items, listIsLoaded }) => {
 							<p className={cn("text-gray-500")}>{item.subtitle.substring(0, 200) + "..."}</p>
 						</div>
 						<div className={cn("flex")}>
-							<button className={cn("mr-4")}>
+							<button onClick={onEdit ? () => onEdit(item.id) : () => {}} className={cn("mr-4")}>
 								<EditIcon />
 							</button>
 
-							<button>
+							<button onClick={onDelete ? () => onDelete(item.id) : () => {}}>
 								<DeleteIcon />
 							</button>
 						</div>

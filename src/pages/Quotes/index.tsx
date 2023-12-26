@@ -24,6 +24,19 @@ const Quotes = () => {
 		addNewQuote(formData);
 		setIsModalOpen(false);
 	};
+	const handleEdit = (id: string) => {
+		const editedItem = quotes?.docs.find((item) => item._id === id);
+		if (editedItem) {
+			setIsModalOpen(true);
+			const formatedItem: IQuoteForm = {
+				anime: editedItem.anime,
+				animePhotoURL: "",
+				character: editedItem.character,
+				quote: editedItem.quote,
+			};
+			setQuoteFormData(formatedItem);
+		}
+	};
 
 	useEffect(() => {
 		getQuotes();
@@ -41,7 +54,7 @@ const Quotes = () => {
 				</p>
 			</div>
 			<Header addButtonHandler={() => setIsModalOpen(true)} />
-			<List items={quotesList} listIsLoaded={quotesIsLoaded} />
+			<List onEdit={handleEdit} items={quotesList} listIsLoaded={quotesIsLoaded} />
 			<Pagination isLoading={quotesIsLoaded} currentPage={page} nextPage={nextPage} prevPage={prevPage} totalPages={quotes?.totalPages || 10} />
 			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title='Create new quote'>
 				<QuoteForm formData={quoteFormData} setFormData={setQuoteFormData} onSubmit={handleSubmit} />
