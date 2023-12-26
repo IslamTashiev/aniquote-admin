@@ -3,16 +3,11 @@ import React, { FC, useState } from "react";
 
 interface CreateQuoteFormProps {
 	onSubmit: (formData: IQuoteForm) => void;
+	formData: IQuoteForm;
+	setFormData: (formData: IQuoteForm) => void;
 }
 
-const CreateQuoteForm: FC<CreateQuoteFormProps> = ({ onSubmit }) => {
-	const [formData, setFormData] = useState<IQuoteForm>({
-		quote: "",
-		character: "",
-		anime: "",
-		animePhotoURL: "",
-	});
-
+const CreateQuoteForm: FC<CreateQuoteFormProps> = ({ onSubmit, formData, setFormData }) => {
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target;
 		setFormData({

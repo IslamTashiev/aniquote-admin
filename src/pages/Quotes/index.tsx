@@ -5,12 +5,18 @@ import Pagination from "@components/Pagination";
 import { useQuoteStore } from "@store/quoteStore/quoteStore";
 import { IQuoteDto, QuoteDto } from "../../dtos/quoteDto";
 import Modal from "@components/Modal";
-import CreateQuoteForm from "./components/CreateQuoteForm";
+import QuoteForm from "./components/QuoteForm";
 import { IQuoteForm } from "@models/quotes";
 
 const Quotes = () => {
 	const [quotesList, setQuotesList] = useState<IQuoteDto[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [quoteFormData, setQuoteFormData] = useState<IQuoteForm>({
+		quote: "",
+		character: "",
+		anime: "",
+		animePhotoURL: "",
+	});
 
 	const { getQuotes, quotes, nextPage, prevPage, page, quotesIsLoaded, addNewQuote } = useQuoteStore((state) => state);
 
@@ -38,7 +44,7 @@ const Quotes = () => {
 			<List items={quotesList} listIsLoaded={quotesIsLoaded} />
 			<Pagination isLoading={quotesIsLoaded} currentPage={page} nextPage={nextPage} prevPage={prevPage} totalPages={quotes?.totalPages || 10} />
 			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title='Create new quote'>
-				<CreateQuoteForm onSubmit={handleSubmit} />
+				<QuoteForm formData={quoteFormData} setFormData={setQuoteFormData} onSubmit={handleSubmit} />
 			</Modal>
 		</div>
 	);
