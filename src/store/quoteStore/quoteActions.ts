@@ -11,3 +11,6 @@ export const addNewQuote = async (data: IQuoteForm) => {
 export const updateQuote = async (data: IQuoteForm, id: string) => {
 	await $axios.post(`/quotes/update/${id}`, data);
 };
+export const deleteQuote = async (id: string) => {
+	await $axios.delete(`/quotes/${id}`);
+};

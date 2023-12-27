@@ -12,6 +12,7 @@ interface IQuoteStore {
 	prevPage: () => void;
 	addNewQuote: (data: IQuoteForm) => void;
 	updateQuote: (data: IQuoteForm, id: string) => void;
+	deleteQuote: (id: string) => void;
 }
 
 export const useQuoteStore = create<IQuoteStore>((set, get) => ({
@@ -39,6 +40,10 @@ export const useQuoteStore = create<IQuoteStore>((set, get) => ({
 	},
 	updateQuote: async (data: IQuoteForm, id: string) => {
 		await quoteActions.updateQuote(data, id);
+		get().getQuotes();
+	},
+	deleteQuote: async (id: string) => {
+		await quoteActions.deleteQuote(id);
 		get().getQuotes();
 	},
 }));

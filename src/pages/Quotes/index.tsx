@@ -7,12 +7,15 @@ import { IQuoteDto, QuoteDto } from "../../dtos/quoteDto";
 import Modal from "@components/Modal";
 import QuoteForm from "./components/QuoteForm";
 import { IQuoteForm } from "@models/quotes";
+import ConfirmModal from "@components/ConfirmModal";
 
 const Quotes = () => {
 	const [quotesList, setQuotesList] = useState<IQuoteDto[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [modalText, setModalText] = useState<string[]>([]);
 	const [updatedQuoteId, setUpdatedQuoteId] = useState<string | null>(null);
+	const [deletedQuoteId, setDeletedQuoteId] = useState<string | null>(null);
+	const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 	const [quoteFormData, setQuoteFormData] = useState<IQuoteForm>({
 		quote: "",
 		character: "",
@@ -20,7 +23,7 @@ const Quotes = () => {
 		animePhotoURL: "",
 	});
 
-	const { getQuotes, quotes, nextPage, prevPage, page, quotesIsLoaded, addNewQuote, updateQuote } = useQuoteStore((state) => state);
+	const { getQuotes, quotes, nextPage, prevPage, page, quotesIsLoaded, addNewQuote, updateQuote, deleteQuote } = useQuoteStore((state) => state);
 
 	const handleSubmit = (formData: IQuoteForm) => {
 		if (updatedQuoteId) {
@@ -46,6 +49,17 @@ const Quotes = () => {
 			setQuoteFormData(formatedItem);
 		}
 	};
+	const handleDelete = (id: string) => {
+		setDeletedQuoteId(id);
+		setIsConfirmModalOpen(true);
+	};
+	const handleConfirm = () => {
+		if (deletedQuoteId) {
+			deleteQuote(deletedQuoteId);
+			setIsConfirmModalOpen(false);
+			setDeletedQuoteId(null);
+		}
+	};
 	const handleAaddNewQuote = () => {
 		setIsModalOpen(true);
 		setModalText(["Create new quote", "Create Quote"]);
@@ -67,11 +81,12 @@ const Quotes = () => {
 				</p>
 			</div>
 			<Header addButtonHandler={handleAaddNewQuote} />
-			<List onEdit={handleEdit} items={quotesList} listIsLoaded={quotesIsLoaded} />
+			<List onDelete={handleDelete} onEdit={handleEdit} items={quotesList} listIsLoaded={quotesIsLoaded} />
 			<Pagination isLoading={quotesIsLoaded} currentPage={page} nextPage={nextPage} prevPage={prevPage} totalPages={quotes?.totalPages || 10} />
 			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={modalText[0]}>
 				<QuoteForm submitButtonText={modalText[1]} formData={quoteFormData} setFormData={setQuoteFormData} onSubmit={handleSubmit} />
 			</Modal>
+			<ConfirmModal isOpen={isConfirmModalOpen} onClose={() => setIsConfirmModalOpen(false)} message='Are you sure want delete this quote?' title='Delete quote' onConfirm={handleConfirm} />
 		</div>
 	);
 };
