@@ -1,27 +1,28 @@
 import Header from "@components/Header";
 import List from "@components/List";
+import { IMainCarouselItemDto } from "@models/mainCarousel";
 import { usePagesStore } from "@store/pagesStore/pagesStore";
-import { useEffect } from "react";
-
-const itemsArray = [
-	{
-		id: "1",
-		title: "Item 1",
-		subtitle: "Subtitle for Item 1",
-	},
-];
+import { useEffect, useState } from "react";
+import { MainCarouselDto } from "../../../dtos/mainCatouselDto";
 
 const MainCarouselList = () => {
+	const [listItems, setListItems] = useState<IMainCarouselItemDto[]>([]);
+
 	const { getMainCarouselItems, mainCarouselItems } = usePagesStore((state) => state);
 
 	useEffect(() => {
 		getMainCarouselItems();
 	}, [getMainCarouselItems]);
+	useEffect(() => {
+		if (mainCarouselItems) {
+			setListItems(mainCarouselItems.map((item) => new MainCarouselDto(item)));
+		}
+	}, [mainCarouselItems]);
 
 	return (
 		<>
 			<Header />
-			<List items={itemsArray} listIsLoaded={true} />
+			<List items={listItems} listIsLoaded={true} />
 		</>
 	);
 };

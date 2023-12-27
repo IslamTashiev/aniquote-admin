@@ -6,3 +6,8 @@ export interface IMainCarouselItem {
 	anime_logo: string;
 	anime_bckg: string;
 }
+export interface IMainCarouselItemDto {
+	id: string;
+	title: string;
+	subtitle: string;
+}
