@@ -5,9 +5,10 @@ interface CreateQuoteFormProps {
 	onSubmit: (formData: IQuoteForm) => void;
 	formData: IQuoteForm;
 	setFormData: (formData: IQuoteForm) => void;
+	submitButtonText: string;
 }
 
-const CreateQuoteForm: FC<CreateQuoteFormProps> = ({ onSubmit, formData, setFormData }) => {
+const CreateQuoteForm: FC<CreateQuoteFormProps> = ({ onSubmit, formData, setFormData, submitButtonText }) => {
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target;
 		setFormData({
@@ -61,7 +62,7 @@ const CreateQuoteForm: FC<CreateQuoteFormProps> = ({ onSubmit, formData, setForm
 				/>
 			</div>
 			<button type='submit' className='w-full bg-blue-500 text-white font-semibold rounded-md py-2'>
-				Create Quote
+				{submitButtonText}
 			</button>
 		</form>
 	);

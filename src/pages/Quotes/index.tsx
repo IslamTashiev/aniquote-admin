@@ -11,6 +11,7 @@ import { IQuoteForm } from "@models/quotes";
 const Quotes = () => {
 	const [quotesList, setQuotesList] = useState<IQuoteDto[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [modalText, setModalText] = useState<string[]>([]);
 	const [quoteFormData, setQuoteFormData] = useState<IQuoteForm>({
 		quote: "",
 		character: "",
@@ -26,6 +27,7 @@ const Quotes = () => {
 	};
 	const handleEdit = (id: string) => {
 		const editedItem = quotes?.docs.find((item) => item._id === id);
+		setModalText(["Edit quote", "Edit this quote?"]);
 		if (editedItem) {
 			setIsModalOpen(true);
 			const formatedItem: IQuoteForm = {
@@ -36,6 +38,10 @@ const Quotes = () => {
 			};
 			setQuoteFormData(formatedItem);
 		}
+	};
+	const handleAaddNewQuote = () => {
+		setIsModalOpen(true);
+		setModalText(["Create new quote", "Create Quote"]);
 	};
 
 	useEffect(() => {
@@ -53,11 +59,11 @@ const Quotes = () => {
 					Total: <span className='text-blue-500 font-medium'>{quotes?.totalDocuments}</span> quotes
 				</p>
 			</div>
-			<Header addButtonHandler={() => setIsModalOpen(true)} />
+			<Header addButtonHandler={handleAaddNewQuote} />
 			<List onEdit={handleEdit} items={quotesList} listIsLoaded={quotesIsLoaded} />
 			<Pagination isLoading={quotesIsLoaded} currentPage={page} nextPage={nextPage} prevPage={prevPage} totalPages={quotes?.totalPages || 10} />
-			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title='Create new quote'>
-				<QuoteForm formData={quoteFormData} setFormData={setQuoteFormData} onSubmit={handleSubmit} />
+			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={modalText[0]}>
+				<QuoteForm submitButtonText={modalText[1]} formData={quoteFormData} setFormData={setQuoteFormData} onSubmit={handleSubmit} />
 			</Modal>
 		</div>
 	);
