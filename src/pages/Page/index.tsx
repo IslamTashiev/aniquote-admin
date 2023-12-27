@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import List from "./components/List";
+import MainCarouselList from "./components/MainCarouselList";
 import Tabs from "./components/Tabs";
 
 const itemsArray = [
@@ -13,12 +14,7 @@ const itemsArray = [
 const tabsData = [
 	{
 		title: "Main carousel",
-		content: (
-			<>
-				<Header />
-				<List items={itemsArray} />
-			</>
-		),
+		content: <MainCarouselList />,
 	},
 	{
 		title: "Main cards",
