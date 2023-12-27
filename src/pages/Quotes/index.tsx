@@ -12,6 +12,7 @@ const Quotes = () => {
 	const [quotesList, setQuotesList] = useState<IQuoteDto[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [modalText, setModalText] = useState<string[]>([]);
+	const [updatedQuoteId, setUpdatedQuoteId] = useState<string | null>(null);
 	const [quoteFormData, setQuoteFormData] = useState<IQuoteForm>({
 		quote: "",
 		character: "",
@@ -19,15 +20,21 @@ const Quotes = () => {
 		animePhotoURL: "",
 	});
 
-	const { getQuotes, quotes, nextPage, prevPage, page, quotesIsLoaded, addNewQuote } = useQuoteStore((state) => state);
+	const { getQuotes, quotes, nextPage, prevPage, page, quotesIsLoaded, addNewQuote, updateQuote } = useQuoteStore((state) => state);
 
 	const handleSubmit = (formData: IQuoteForm) => {
-		addNewQuote(formData);
+		if (updatedQuoteId) {
+			updateQuote(formData, updatedQuoteId);
+			setUpdatedQuoteId(null);
+		} else {
+			addNewQuote(formData);
+		}
 		setIsModalOpen(false);
 	};
 	const handleEdit = (id: string) => {
 		const editedItem = quotes?.docs.find((item) => item._id === id);
 		setModalText(["Edit quote", "Edit this quote?"]);
+		setUpdatedQuoteId(id);
 		if (editedItem) {
 			setIsModalOpen(true);
 			const formatedItem: IQuoteForm = {

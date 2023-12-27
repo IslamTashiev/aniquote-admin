@@ -13,7 +13,7 @@ export class QuoteDto {
 
 	constructor(quote: IQuote) {
 		this.id = quote._id;
-		this.title = quote.anime;
+		this.title = quote.character + " • " + quote.anime;
 		this.subtitle = quote.quote;
 	}
 }

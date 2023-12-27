@@ -8,3 +8,6 @@ export const getQuotes = async (page: number, limit: number) => {
 export const addNewQuote = async (data: IQuoteForm) => {
 	await $axios.post("/quotes", data);
 };
+export const updateQuote = async (data: IQuoteForm, id: string) => {
+	await $axios.post(`/quotes/update/${id}`, data);
+};
