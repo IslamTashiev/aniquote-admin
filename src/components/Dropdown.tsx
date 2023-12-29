@@ -1,13 +1,9 @@
+import { IDropdownOption } from "@models/dropdownOption";
 import { cn } from "@utils/cn";
 import React, { FC, useState, useEffect, useRef } from "react";
 
-interface DropdownOption {
-	label: string;
-	value: string | number;
-}
-
 interface DropdownProps {
-	options: DropdownOption[];
+	options: IDropdownOption[];
 	selectedValue: string | number;
 	onSelectChange: (value: string | number) => void;
 }
@@ -64,7 +60,7 @@ const Dropdown: FC<DropdownProps> = ({ options, selectedValue, onSelectChange })
 				{options.find((option) => option.value === selectedValue)?.label || "Select an option"}
 			</div>
 			{isOpen && (
-				<div className='absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md max-h-80 overflow-auto'>
+				<div className='z-10 mt-1 w-full bg-white border border-gray-300 rounded-md max-h-80 overflow-auto'>
 					<input
 						ref={inputRef}
 						type='text'

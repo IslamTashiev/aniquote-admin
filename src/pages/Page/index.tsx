@@ -1,6 +1,6 @@
 import Header from "./components/Header";
 import List from "./components/List";
-import MainCarouselList from "./components/MainCarouselList";
+import MainCarouselList from "./components/MainCarousel/MainCarouselList";
 import Tabs from "./components/Tabs";
 
 const itemsArray = [
