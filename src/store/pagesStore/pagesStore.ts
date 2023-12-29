@@ -15,6 +15,7 @@ interface IPagesStore {
 	getTitles: () => void;
 	getQuotesByTitle: (title: string) => void;
 	createNewCarouselItem: (data: IMainCarouselItemData) => void;
+	removeCarouselItem: (id: string) => void;
 }
 
 export const usePagesStore = create<IPagesStore>((set, get) => ({
@@ -41,6 +42,10 @@ export const usePagesStore = create<IPagesStore>((set, get) => ({
 	},
 	createNewCarouselItem: async (data: IMainCarouselItemData) => {
 		await pagesActions.createNewCarouselItem(data);
+		get().getMainCarouselItems();
+	},
+	removeCarouselItem: async (id: string) => {
+		await pagesActions.removeCarouselItem(id);
 		get().getMainCarouselItems();
 	},
 }));

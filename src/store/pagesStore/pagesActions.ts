@@ -18,3 +18,6 @@ export const getQuotesByTitle = async (title: string) => {
 export const createNewCarouselItem = async (data: IMainCarouselItemData) => {
 	await $axios.post("/create/carousel-item", data);
 };
+export const removeCarouselItem = async (id: string) => {
+	await $axios.delete(`/remove/carousel-item/${id}`);
+};
