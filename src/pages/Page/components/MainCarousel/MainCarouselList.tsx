@@ -13,7 +13,7 @@ const MainCarouselList = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [deletedItemId, setDeletedItemId] = useState<string | null>(null);
 
-	const { getMainCarouselItems, mainCarouselItems, removeCarouselItem } = usePagesStore((state) => state);
+	const { getMainCarouselItems, mainCarouselItems, removeCarouselItem, isMainCarouselLoaded } = usePagesStore((state) => state);
 
 	const handleConfirmModal = () => {
 		removeCarouselItem(deletedItemId ?? "");
@@ -31,7 +31,7 @@ const MainCarouselList = () => {
 	return (
 		<>
 			<Header addButtonHandler={() => setIsModalOpen(true)} />
-			<List onDelete={setDeletedItemId} items={listItems} listIsLoaded={true} />
+			<List onDelete={setDeletedItemId} items={listItems} listIsLoaded={isMainCarouselLoaded} />
 			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title='Create new main poster'>
 				<CarouselForm />
 			</Modal>
