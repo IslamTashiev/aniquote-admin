@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import List from "./components/List";
+import MainCards from "./components/MainCards/MainCards";
 import MainCarouselList from "./components/MainCarousel/MainCarouselList";
 import Tabs from "./components/Tabs";
 
@@ -18,12 +19,7 @@ const tabsData = [
 	},
 	{
 		title: "Main cards",
-		content: (
-			<>
-				<Header />
-				<List items={itemsArray} />
-			</>
-		),
+		content: <MainCards />,
 	},
 	{
 		title: "Anime titles",

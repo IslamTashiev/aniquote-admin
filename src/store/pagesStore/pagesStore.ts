@@ -3,6 +3,7 @@ import create from "zustand";
 import * as pagesActions from "./pagesActions";
 import { IDropdownOption } from "@models/dropdownOption";
 import { IQuote } from "@models/quotes";
+import { ICard } from "@models/cards";
 
 interface IPagesStore {
 	mainCarouselItems: IMainCarouselItem[];
@@ -11,11 +12,14 @@ interface IPagesStore {
 	isTitlesLoaded: boolean;
 	quotesByTitle: IQuote[];
 	isQuotesByTitleLoaded: boolean;
+	cards: ICard[];
+	cardsIsLoaded: boolean;
 	getMainCarouselItems: () => void;
 	getTitles: () => void;
 	getQuotesByTitle: (title: string) => void;
 	createNewCarouselItem: (data: IMainCarouselItemData) => void;
 	removeCarouselItem: (id: string) => void;
+	getCards: () => void;
 }
 
 export const usePagesStore = create<IPagesStore>((set, get) => ({
@@ -25,6 +29,8 @@ export const usePagesStore = create<IPagesStore>((set, get) => ({
 	isTitlesLoaded: false,
 	quotesByTitle: [],
 	isQuotesByTitleLoaded: false,
+	cards: [],
+	cardsIsLoaded: false,
 	getMainCarouselItems: async () => {
 		set({ isMainCarouselLoaded: false, mainCarouselItems: [] });
 		const data = await pagesActions.getMainCarouselItems();
@@ -47,5 +53,10 @@ export const usePagesStore = create<IPagesStore>((set, get) => ({
 	removeCarouselItem: async (id: string) => {
 		await pagesActions.removeCarouselItem(id);
 		get().getMainCarouselItems();
+	},
+	getCards: async () => {
+		set({ cardsIsLoaded: false, cards: [] });
+		const data = await pagesActions.getCards();
+		set({ cardsIsLoaded: true, cards: data });
 	},
 }));
