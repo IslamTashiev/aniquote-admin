@@ -1,3 +1,5 @@
+import { IQuote } from "./quotes";
+
 export interface IMainCarouselItem {
 	_id: string;
 	anime: string;
@@ -17,4 +19,19 @@ export interface IMainCarouselItemData {
 	quote: string;
 	character: string;
 	anime: string;
+}
+export interface IMainPosterItemRequest {
+	quote: string[];
+	posterBackground: string;
+	titleLogo: string;
+	tablePriority: number;
+}
+export interface IMainPosterItem {
+	_id: string;
+	quote: IQuote;
+	posterBackground: string;
+	titleLogo: string;
+	tablePriority: number;
+	createdAt: string;
+	updatedAt: string;
 }
