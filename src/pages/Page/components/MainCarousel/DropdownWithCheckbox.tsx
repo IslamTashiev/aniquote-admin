@@ -14,7 +14,7 @@ interface IDropdownWithCheckboxProps {
 const DropdownWithCheckbox: FC<IDropdownWithCheckboxProps> = ({ checkboxValues, setCheckboxValues, selectedValue, setSelectedValue, maxSelectedCount }) => {
 	const [selectedCheckboxValues, setSelectedCheckboxValues] = useState<IQuote[]>([]);
 
-	const { titles, getQuotesByTitle, quotesByTitle } = usePagesStore((state) => state);
+	const { titles, getQuotesByTitle, quotesByTitle, getTitles } = usePagesStore((state) => state);
 
 	const handleSelectValue = (value: string | number) => {
 		const currentTitle = titles.find((title) => title.value === value)?.label;
@@ -34,8 +34,18 @@ const DropdownWithCheckbox: FC<IDropdownWithCheckboxProps> = ({ checkboxValues, 
 	};
 
 	useEffect(() => {
-		setSelectedCheckboxValues(quotesByTitle.filter((quote) => checkboxValues.includes(quote._id)));
+		if (quotesByTitle.length) {
+			setSelectedCheckboxValues(quotesByTitle.filter((quote) => checkboxValues.includes(quote._id)));
+		}
 	}, [checkboxValues, quotesByTitle]);
+	useEffect(() => {
+		getTitles();
+	}, [getTitles]);
+	useEffect(() => {
+		if (selectedValue) {
+			getQuotesByTitle(selectedValue.toString());
+		}
+	}, [selectedValue, getQuotesByTitle]);
 
 	return (
 		<>

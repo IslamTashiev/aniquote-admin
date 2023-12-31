@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import DropdownWithCheckbox from "./DropdownWithCheckbox";
 import AddIcon from "@assets/add-admin.svg";
 import { IMainPosterItemRequest } from "@models/mainCarousel";
@@ -9,17 +9,19 @@ export type IFile = {
 	warning: string | null;
 };
 
-const NewCarouselForm = () => {
-	const [checkboxValues, setCheckboxValues] = useState<string[]>([]);
-	const [selectedValue, setSelectedValue] = useState<string | number>("");
+interface NewCarouselFormProps {
+	checkboxValues: string[];
+	setCheckboxValues: React.Dispatch<React.SetStateAction<string[]>>;
+	selectedValue: string | number;
+	setSelectedValue: React.Dispatch<React.SetStateAction<string | number>>;
+	formData: IMainPosterItemRequest;
+	handleSubmit: (formData: IMainPosterItemRequest) => void;
+}
+
+const NewCarouselForm: FC<NewCarouselFormProps> = (props) => {
+	const { checkboxValues, formData, selectedValue, setCheckboxValues, setSelectedValue, handleSubmit } = props;
 	const [posterBackground, setPosterBackground] = useState<IFile>({ file: null, warning: null });
 	const [titleLogo, setTitleLogo] = useState<IFile>({ file: null, warning: null });
-	const [formData, setFormData] = useState<IMainPosterItemRequest>({
-		quote: [],
-		posterBackground: "",
-		titleLogo: "",
-		tablePriority: 0,
-	});
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
@@ -39,12 +41,12 @@ const NewCarouselForm = () => {
 			}
 		}
 	};
-	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const posterBackgroundUrl = await uploadFiles(posterBackground);
 		const titleLogodUrl = await uploadFiles(titleLogo);
-		setFormData({
-			...formData,
+
+		handleSubmit({
 			quote: checkboxValues,
 			tablePriority: 1,
 			posterBackground: posterBackgroundUrl || "",
@@ -53,14 +55,18 @@ const NewCarouselForm = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={onSubmit}>
 			<DropdownWithCheckbox checkboxValues={checkboxValues} setCheckboxValues={setCheckboxValues} selectedValue={selectedValue} setSelectedValue={setSelectedValue} maxSelectedCount={3} />
 			<div className='flex gap-3'>
 				<label>
 					<input type='file' onChange={handleFileChange} name='posterBackground' className='hidden' />
 					<span className='block mb-1 font-medium'>Select background image (.png, .jpg, .jpeg)</span>
 					<div className='w-96 h-80 border border-gray-300 rounded-lg flex justify-center items-center cursor-pointer'>
-						{posterBackground.file ? <img className='w-full h-full object-cover rounded-lg' src={URL.createObjectURL(posterBackground.file)} alt='selected-image' /> : <AddIcon />}
+						{posterBackground.file || formData.posterBackground ? (
+							<img className='w-full h-full object-cover rounded-lg' src={posterBackground.file ? URL.createObjectURL(posterBackground.file) : formData.posterBackground} alt='selected-image' />
+						) : (
+							<AddIcon />
+						)}
 					</div>
 					{posterBackground.warning && <p className='text-red-500'>{posterBackground.warning}</p>}
 				</label>
@@ -68,7 +74,11 @@ const NewCarouselForm = () => {
 					<input type='file' onChange={handleFileChange} name='titleLogo' className='hidden' />
 					<span className='block mb-1 font-medium'>Select logo (.png, .jpg, .jpeg)</span>
 					<div className='w-80 h-80 border border-gray-300 rounded-lg flex justify-center items-center cursor-pointer'>
-						{titleLogo.file ? <img className='w-44 object-cover rounded-lg' src={URL.createObjectURL(titleLogo.file)} alt='selected-image' /> : <AddIcon />}
+						{titleLogo.file || formData.titleLogo ? (
+							<img className='w-44 object-cover rounded-lg' src={titleLogo.file ? URL.createObjectURL(titleLogo.file) : formData.titleLogo} alt='selected-image' />
+						) : (
+							<AddIcon />
+						)}
 					</div>
 					{titleLogo.warning && <p className='text-red-500'>{titleLogo.warning}</p>}
 				</label>

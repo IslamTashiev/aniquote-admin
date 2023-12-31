@@ -1,4 +1,4 @@
-import { IMainCarouselItem, IMainCarouselItemData } from "@models/mainCarousel";
+import { IMainCarouselItem, IMainCarouselItemData, IMainPosterItem, IMainPosterItemRequest } from "@models/mainCarousel";
 import create from "zustand";
 import * as pagesActions from "./pagesActions";
 import { IDropdownOption } from "@models/dropdownOption";
@@ -14,12 +14,15 @@ interface IPagesStore {
 	isQuotesByTitleLoaded: boolean;
 	cards: ICard[];
 	cardsIsLoaded: boolean;
+	mainPosters: IMainPosterItem[];
 	getMainCarouselItems: () => void;
 	getTitles: () => void;
 	getQuotesByTitle: (title: string) => void;
 	createNewCarouselItem: (data: IMainCarouselItemData) => void;
 	removeCarouselItem: (id: string) => void;
 	getCards: () => void;
+	getPosters: () => void;
+	createNewPoster: (data: IMainPosterItemRequest) => void;
 }
 
 export const usePagesStore = create<IPagesStore>((set, get) => ({
@@ -31,6 +34,7 @@ export const usePagesStore = create<IPagesStore>((set, get) => ({
 	isQuotesByTitleLoaded: false,
 	cards: [],
 	cardsIsLoaded: false,
+	mainPosters: [],
 	getMainCarouselItems: async () => {
 		set({ isMainCarouselLoaded: false, mainCarouselItems: [] });
 		const data = await pagesActions.getMainCarouselItems();
@@ -58,5 +62,13 @@ export const usePagesStore = create<IPagesStore>((set, get) => ({
 		set({ cardsIsLoaded: false, cards: [] });
 		const data = await pagesActions.getCards();
 		set({ cardsIsLoaded: true, cards: data });
+	},
+	getPosters: async () => {
+		const data = await pagesActions.getPosters();
+		set({ mainPosters: data });
+	},
+	createNewPoster: async (data: IMainPosterItemRequest) => {
+		await pagesActions.createNewPoster(data);
+		get().getPosters();
 	},
 }));
