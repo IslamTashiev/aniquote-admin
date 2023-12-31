@@ -23,3 +23,9 @@ export const getPosters = async () => {
 export const createNewPoster = async (data: IMainPosterItemRequest) => {
 	await $axios.post("/posters", data);
 };
+export const deletePoster = async (id: string) => {
+	await $axios.delete(`/posters/delete/${id}`);
+};
+export const updatePoster = async (id: string, data: IMainPosterItemRequest) => {
+	await $axios.post(`/posters/update/${id}`, data);
+};

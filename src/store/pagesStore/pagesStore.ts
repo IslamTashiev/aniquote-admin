@@ -19,6 +19,8 @@ interface IPagesStore {
 	getCards: () => void;
 	getPosters: () => void;
 	createNewPoster: (data: IMainPosterItemRequest) => void;
+	deletePoster: (id: string) => void;
+	updatePoster: (id: string, data: IMainPosterItemRequest) => void;
 }
 
 export const usePagesStore = create<IPagesStore>((set, get) => ({
@@ -52,6 +54,14 @@ export const usePagesStore = create<IPagesStore>((set, get) => ({
 	},
 	createNewPoster: async (data: IMainPosterItemRequest) => {
 		await pagesActions.createNewPoster(data);
+		get().getPosters();
+	},
+	deletePoster: async (id: string) => {
+		await pagesActions.deletePoster(id);
+		get().getPosters();
+	},
+	updatePoster: async (id: string, data: IMainPosterItemRequest) => {
+		await pagesActions.updatePoster(id, data);
 		get().getPosters();
 	},
 }));

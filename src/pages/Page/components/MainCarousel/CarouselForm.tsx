@@ -43,8 +43,8 @@ const CarouselForm: FC<CarouselFormProps> = (props) => {
 	};
 	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const posterBackgroundUrl = await uploadFiles(posterBackground);
-		const titleLogodUrl = await uploadFiles(titleLogo);
+		const posterBackgroundUrl = posterBackground.file ? await uploadFiles(posterBackground) : formData.posterBackground;
+		const titleLogodUrl = titleLogo.file ? await uploadFiles(titleLogo) : formData.titleLogo;
 
 		handleSubmit({
 			quote: checkboxValues,
