@@ -15,6 +15,7 @@ interface IPagesStore {
 	cards: ICard[];
 	cardsIsLoaded: boolean;
 	mainPosters: IMainPosterItem[];
+	isMainPostersLoaded: boolean;
 	getMainCarouselItems: () => void;
 	getTitles: () => void;
 	getQuotesByTitle: (title: string) => void;
@@ -35,6 +36,7 @@ export const usePagesStore = create<IPagesStore>((set, get) => ({
 	cards: [],
 	cardsIsLoaded: false,
 	mainPosters: [],
+	isMainPostersLoaded: false,
 	getMainCarouselItems: async () => {
 		set({ isMainCarouselLoaded: false, mainCarouselItems: [] });
 		const data = await pagesActions.getMainCarouselItems();
@@ -64,8 +66,9 @@ export const usePagesStore = create<IPagesStore>((set, get) => ({
 		set({ cardsIsLoaded: true, cards: data });
 	},
 	getPosters: async () => {
+		set({ isMainPostersLoaded: false, mainPosters: [] });
 		const data = await pagesActions.getPosters();
-		set({ mainPosters: data });
+		set({ isMainPostersLoaded: true, mainPosters: data });
 	},
 	createNewPoster: async (data: IMainPosterItemRequest) => {
 		await pagesActions.createNewPoster(data);

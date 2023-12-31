@@ -3,11 +3,9 @@ import List from "@components/List";
 import { IMainCarouselItemDto, IMainPosterItemRequest } from "@models/mainCarousel";
 import { usePagesStore } from "@store/pagesStore/pagesStore";
 import { useEffect, useState } from "react";
-import { MainCarouselDto } from "../../../../dtos/mainCatouselDto";
-import Modal from "@components/Modal";
-import CarouselForm from "./CarouselForm";
 import ConfirmModal from "@components/ConfirmModal";
 import NewCarouselForm from "./NewCarouselForm";
+import { PosterDto } from "../../../../dtos/posterDto";
 
 const MainCarouselList = () => {
 	const [listItems, setListItems] = useState<IMainCarouselItemDto[]>([]);
@@ -23,7 +21,7 @@ const MainCarouselList = () => {
 		tablePriority: 0,
 	});
 
-	const { getMainCarouselItems, mainCarouselItems, removeCarouselItem, isMainCarouselLoaded, createNewPoster, getPosters } = usePagesStore((state) => state);
+	const { removeCarouselItem, isMainPostersLoaded, createNewPoster, getPosters, mainPosters } = usePagesStore((state) => state);
 
 	const handleConfirmModal = () => {
 		removeCarouselItem(deletedItemId ?? "");
@@ -35,14 +33,13 @@ const MainCarouselList = () => {
 	};
 
 	useEffect(() => {
-		getMainCarouselItems();
 		getPosters();
-	}, [getMainCarouselItems, getPosters]);
+	}, [getPosters]);
 	useEffect(() => {
-		if (mainCarouselItems) {
-			setListItems(mainCarouselItems.map((item) => new MainCarouselDto(item)));
+		if (mainPosters) {
+			setListItems(mainPosters.map((item) => new PosterDto(item)));
 		}
-	}, [mainCarouselItems]);
+	}, [mainPosters]);
 
 	return (
 		<>
@@ -57,11 +54,8 @@ const MainCarouselList = () => {
 					handleSubmit={handleCreateNewItem}
 				/>
 			) : (
-				<List onDelete={setDeletedItemId} items={listItems} listIsLoaded={isMainCarouselLoaded} />
+				<List onDelete={setDeletedItemId} items={listItems} listIsLoaded={isMainPostersLoaded} />
 			)}
-			{/* <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title='Create new main poster'>
-				<CarouselForm />
-			</Modal> */}
 			<ConfirmModal isOpen={!!deletedItemId} message='Are you sure want delete this item' onClose={() => setDeletedItemId(null)} onConfirm={handleConfirmModal} title='Delete carousel item' />
 		</>
 	);

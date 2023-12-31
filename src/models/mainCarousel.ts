@@ -28,7 +28,7 @@ export interface IMainPosterItemRequest {
 }
 export interface IMainPosterItem {
 	_id: string;
-	quote: IQuote;
+	quote: IQuote[];
 	posterBackground: string;
 	titleLogo: string;
 	tablePriority: number;
