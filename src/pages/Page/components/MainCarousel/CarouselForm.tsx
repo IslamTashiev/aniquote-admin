@@ -1,104 +1,90 @@
-import Dropdown from "@components/Dropdown";
-import { IMainCarouselItemData } from "@models/mainCarousel";
-import { usePagesStore } from "@store/pagesStore/pagesStore";
-import { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
+import DropdownWithCheckbox from "./DropdownWithCheckbox";
+import AddIcon from "@assets/add-admin.svg";
+import { IMainPosterItemRequest } from "@models/mainCarousel";
+import { uploadFiles } from "@utils/uploadAndGetFile";
 
-const CarouselForm = () => {
-	const [selectedValue, setSelectedValue] = useState<string | number>("");
-	const [checkboxValue, setcheckboxValue] = useState<string>("");
-	const [formData, setFormData] = useState({
-		anime_logo: "",
-		anime_bckg: "",
-	});
+export type IFile = {
+	file: File | null;
+	warning: string | null;
+};
 
-	const { titles, getTitles, getQuotesByTitle, quotesByTitle, createNewCarouselItem } = usePagesStore((state) => state);
+interface CarouselFormProps {
+	checkboxValues: string[];
+	setCheckboxValues: React.Dispatch<React.SetStateAction<string[]>>;
+	selectedValue: string | number;
+	setSelectedValue: React.Dispatch<React.SetStateAction<string | number>>;
+	formData: IMainPosterItemRequest;
+	handleSubmit: (formData: IMainPosterItemRequest) => void;
+}
 
-	const handleSelectValue = (value: string | number) => {
-		const currentTitle = titles.find((title) => title.value === value)?.label;
-		if (currentTitle) {
-			getQuotesByTitle(currentTitle);
-			setSelectedValue(value);
+const CarouselForm: FC<CarouselFormProps> = (props) => {
+	const { checkboxValues, formData, selectedValue, setCheckboxValues, setSelectedValue, handleSubmit } = props;
+	const [posterBackground, setPosterBackground] = useState<IFile>({ file: null, warning: null });
+	const [titleLogo, setTitleLogo] = useState<IFile>({ file: null, warning: null });
+
+	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		const inputName = event.target?.name;
+
+		if (inputName === "posterBackground" && file) {
+			if (file.size <= 2048 * 1024) {
+				setPosterBackground({ file, warning: null });
+			} else {
+				setPosterBackground({ file: null, warning: "File size is too large" });
+			}
+		} else if (inputName === "titleLogo" && file) {
+			if (file.size <= 2048 * 1024) {
+				setTitleLogo({ file, warning: null });
+			} else {
+				setTitleLogo({ file: null, warning: "File size is too large" });
+			}
 		}
 	};
-	const handleCheckboxChange = (id: string) => {
-		setcheckboxValue(id);
+	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		const posterBackgroundUrl = await uploadFiles(posterBackground);
+		const titleLogodUrl = await uploadFiles(titleLogo);
+
+		handleSubmit({
+			quote: checkboxValues,
+			tablePriority: 1,
+			posterBackground: posterBackgroundUrl || "",
+			titleLogo: titleLogodUrl || "",
+		});
 	};
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setFormData((prevData) => ({ ...prevData, [name]: value }));
-	};
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const currentQuote = quotesByTitle.find((quote) => quote._id === checkboxValue);
-		if (currentQuote) {
-			const submitedData: IMainCarouselItemData = {
-				anime_logo: formData.anime_logo,
-				anime_bckg: formData.anime_bckg,
-				quote: currentQuote.quote,
-				character: currentQuote.character,
-				anime: currentQuote.anime,
-			};
-			createNewCarouselItem(submitedData);
-		}
-	};
-	useEffect(() => {
-		getTitles();
-	}, [getTitles]);
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<div className='mb-4'>
-				<span className='block mb-1 font-medium'>Chose title</span>
-				<Dropdown onSelectChange={handleSelectValue} options={titles} selectedValue={selectedValue} />
-			</div>
-			{quotesByTitle.length ? (
-				<div className='max-h-44 overflow-auto mb-4'>
-					<span className='block mb-1 font-medium'>Chose quote</span>
-					{quotesByTitle.map((checkbox) => (
-						<div key={checkbox._id} className='border-b border-gray-300 py-1'>
-							<label className='flex items-center space-x-2'>
-								<input
-									type='checkbox'
-									checked={checkboxValue === checkbox._id}
-									onChange={() => handleCheckboxChange(checkbox._id)}
-									className='form-checkbox rounded border-gray-300 text-blue-500 focus:ring-blue-500'
-								/>
-								<span className='text-gray-700 relative w-full'>
-									{checkbox.quote.substring(0, 50) + "..."}
-									<span className='px-1 bg-slate-300 absolute right-0 rounded-md'>{checkbox.quote.length}</span>
-								</span>
-							</label>
-						</div>
-					))}
-				</div>
-			) : null}
-			<div className='mb-4'>
-				<label htmlFor='Anime logo' className='block mb-1 font-medium'>
-					Anime logo:
+		<form onSubmit={onSubmit}>
+			<DropdownWithCheckbox checkboxValues={checkboxValues} setCheckboxValues={setCheckboxValues} selectedValue={selectedValue} setSelectedValue={setSelectedValue} maxSelectedCount={1} />
+			<div className='flex gap-3'>
+				<label>
+					<input type='file' onChange={handleFileChange} name='posterBackground' className='hidden' />
+					<span className='block mb-1 font-medium'>Select background image (.png, .jpg, .jpeg)</span>
+					<div className='w-96 h-80 border border-gray-300 rounded-lg flex justify-center items-center cursor-pointer'>
+						{posterBackground.file || formData.posterBackground ? (
+							<img className='w-full h-full object-cover rounded-lg' src={posterBackground.file ? URL.createObjectURL(posterBackground.file) : formData.posterBackground} alt='selected-image' />
+						) : (
+							<AddIcon />
+						)}
+					</div>
+					{posterBackground.warning && <p className='text-red-500'>{posterBackground.warning}</p>}
 				</label>
-				<input
-					type='text'
-					id='anime_logo'
-					name='anime_logo'
-					value={formData.anime_logo}
-					onChange={handleChange}
-					className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-blue-500'
-				/>
-			</div>
-			<div className='mb-4'>
-				<label htmlFor='Anime logo' className='block mb-1 font-medium'>
-					Background poster:
+				<label>
+					<input type='file' onChange={handleFileChange} name='titleLogo' className='hidden' />
+					<span className='block mb-1 font-medium'>Select logo (.png, .jpg, .jpeg)</span>
+					<div className='w-80 h-80 border border-gray-300 rounded-lg flex justify-center items-center cursor-pointer'>
+						{titleLogo.file || formData.titleLogo ? (
+							<img className='w-44 object-cover rounded-lg' src={titleLogo.file ? URL.createObjectURL(titleLogo.file) : formData.titleLogo} alt='selected-image' />
+						) : (
+							<AddIcon />
+						)}
+					</div>
+					{titleLogo.warning && <p className='text-red-500'>{titleLogo.warning}</p>}
 				</label>
-				<input
-					type='text'
-					id='anime_bckg'
-					name='anime_bckg'
-					value={formData.anime_bckg}
-					onChange={handleChange}
-					className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-blue-500'
-				/>
 			</div>
-			<button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded-md w-full'>
+			<button className='mt-3 bg-gray-200 text-black px-4 py-2 rounded-md mr-2'>Cancel</button>
+			<button type='submit' className='mt-3 bg-blue-500 text-white px-4 py-2 rounded-md'>
 				Create
 			</button>
 		</form>

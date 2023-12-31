@@ -4,7 +4,7 @@ import { IMainCarouselItemDto, IMainPosterItemRequest } from "@models/mainCarous
 import { usePagesStore } from "@store/pagesStore/pagesStore";
 import { useEffect, useState } from "react";
 import ConfirmModal from "@components/ConfirmModal";
-import NewCarouselForm from "./NewCarouselForm";
+import CarouselForm from "./CarouselForm";
 import { PosterDto } from "../../../../dtos/posterDto";
 
 const MainCarouselList = () => {
@@ -21,10 +21,10 @@ const MainCarouselList = () => {
 		tablePriority: 0,
 	});
 
-	const { removeCarouselItem, isMainPostersLoaded, createNewPoster, getPosters, mainPosters } = usePagesStore((state) => state);
+	const { isMainPostersLoaded, createNewPoster, getPosters, mainPosters } = usePagesStore((state) => state);
 
 	const handleConfirmModal = () => {
-		removeCarouselItem(deletedItemId ?? "");
+		// removeCarouselItem(deletedItemId ?? "");
 		setDeletedItemId(null);
 	};
 	const handleCreateNewItem = (formData: IMainPosterItemRequest) => {
@@ -45,7 +45,7 @@ const MainCarouselList = () => {
 		<>
 			<Header addButtonHandler={() => setIsModalOpen(!isModalOpen)} />
 			{isModalOpen ? (
-				<NewCarouselForm
+				<CarouselForm
 					checkboxValues={checkboxValues}
 					formData={formData}
 					selectedValue={selectedValue}

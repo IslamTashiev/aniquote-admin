@@ -1,6 +1,6 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase/config";
-import { IFile } from "../pages/Page/components/MainCarousel/NewCarouselForm";
+import { IFile } from "../pages/Page/components/MainCarousel/CarouselForm";
 
 export const uploadFiles = async (uploaded: IFile) => {
 	let uploadedUrl: string | null = null;
