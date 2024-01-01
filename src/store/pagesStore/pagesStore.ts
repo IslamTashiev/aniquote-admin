@@ -4,6 +4,7 @@ import * as pagesActions from "./pagesActions";
 import { IDropdownOption } from "@models/dropdownOption";
 import { IQuote } from "@models/quotes";
 import { ICard } from "@models/cards";
+import { deleteFile } from "@utils/deleteFile";
 
 interface IPagesStore {
 	titles: IDropdownOption[];
@@ -57,10 +58,22 @@ export const usePagesStore = create<IPagesStore>((set, get) => ({
 		get().getPosters();
 	},
 	deletePoster: async (id: string) => {
+		const { mainPosters } = get();
+		const deletedPoster = mainPosters.find((poster) => poster._id === id);
+		if (deletedPoster) {
+			await deleteFile(deletedPoster.posterBackground);
+			await deleteFile(deletedPoster.titleLogo);
+		}
 		await pagesActions.deletePoster(id);
 		get().getPosters();
 	},
 	updatePoster: async (id: string, data: IMainPosterItemRequest) => {
+		const { mainPosters } = get();
+		const updatedPoster = mainPosters.find((poster) => poster._id === id);
+		if (updatedPoster) {
+			updatedPoster.posterBackground !== data.posterBackground ? await deleteFile(updatedPoster.posterBackground) : null;
+			updatedPoster.titleLogo !== data.titleLogo ? await deleteFile(updatedPoster.titleLogo) : null;
+		}
 		await pagesActions.updatePoster(id, data);
 		get().getPosters();
 	},

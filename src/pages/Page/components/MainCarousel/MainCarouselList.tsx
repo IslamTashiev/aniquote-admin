@@ -50,12 +50,24 @@ const MainCarouselList = () => {
 			setIsModalOpen(false);
 			setCheckboxValues([]);
 			setSelectedValue("");
+			setFormData({
+				posterBackground: "",
+				quote: [""],
+				tablePriority: 0,
+				titleLogo: "",
+			});
 			return;
 		}
 		createNewPoster(formData);
 		setIsModalOpen(false);
 		setCheckboxValues([]);
 		setSelectedValue("");
+		setFormData({
+			posterBackground: "",
+			quote: [""],
+			tablePriority: 0,
+			titleLogo: "",
+		});
 	};
 
 	useEffect(() => {
