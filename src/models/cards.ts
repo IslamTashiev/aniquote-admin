@@ -6,3 +6,8 @@ export interface ICard {
 	anime: string;
 	quotes: IQuote[];
 }
+export interface ICardRequest {
+	anime_bckg: string;
+	anime: string;
+	quotes: string[];
+}

@@ -3,7 +3,7 @@ import create from "zustand";
 import * as pagesActions from "./pagesActions";
 import { IDropdownOption } from "@models/dropdownOption";
 import { IQuote } from "@models/quotes";
-import { ICard } from "@models/cards";
+import { ICard, ICardRequest } from "@models/cards";
 import { deleteFile } from "@utils/deleteFile";
 
 interface IPagesStore {
@@ -18,6 +18,9 @@ interface IPagesStore {
 	getTitles: () => void;
 	getQuotesByTitle: (title: string) => void;
 	getCards: () => void;
+	createNewCard: (data: ICardRequest) => void;
+	updateCard: (id: string, data: ICardRequest) => void;
+	deleteCard: (id: string) => void;
 	getPosters: () => void;
 	createNewPoster: (data: IMainPosterItemRequest) => void;
 	deletePoster: (id: string) => void;
@@ -47,6 +50,30 @@ export const usePagesStore = create<IPagesStore>((set, get) => ({
 		set({ cardsIsLoaded: false, cards: [] });
 		const data = await pagesActions.getCards();
 		set({ cardsIsLoaded: true, cards: data });
+	},
+	createNewCard: async (data: ICardRequest) => {
+		await pagesActions.createNewCard(data);
+		get().getCards();
+	},
+	updateCard: async (id: string, data: ICardRequest) => {
+		const { cards } = get();
+		const updatedCard = cards.find((card) => card._id === id);
+
+		if (updatedCard) {
+			updatedCard.anime_bckg !== data.anime_bckg ? await deleteFile(updatedCard.anime_bckg) : null;
+		}
+
+		await pagesActions.updateCard(id, data);
+		get().getCards();
+	},
+	deleteCard: async (id: string) => {
+		const { cards } = get();
+		const deletedCard = cards.find((card) => card._id === id);
+		if (deletedCard) {
+			await deleteFile(deletedCard.anime_bckg);
+		}
+		await pagesActions.deleteCard(id);
+		get().getCards();
 	},
 	getPosters: async () => {
 		set({ isMainPostersLoaded: false, mainPosters: [] });

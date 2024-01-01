@@ -1,5 +1,5 @@
 import $axios from "@api/axios";
-import { ICard } from "@models/cards";
+import { ICard, ICardRequest } from "@models/cards";
 import { IDropdownOption } from "@models/dropdownOption";
 import { IMainPosterItem, IMainPosterItemRequest } from "@models/mainCarousel";
 import { IQuote } from "@models/quotes";
@@ -15,6 +15,15 @@ export const getQuotesByTitle = async (title: string) => {
 export const getCards = async () => {
 	const { data } = await $axios.get<ICard[]>("/anime-cards");
 	return data;
+};
+export const createNewCard = async (data: ICardRequest) => {
+	await $axios.post("/create/anime-card", data);
+};
+export const deleteCard = async (id: string) => {
+	await $axios.delete(`/delete/anime-card/${id}`);
+};
+export const updateCard = async (id: string, data: ICardRequest) => {
+	await $axios.post(`/update/anime-card/${id}`, data);
 };
 export const getPosters = async () => {
 	const { data } = await $axios.get<IMainPosterItem[]>("/posters");
