@@ -6,7 +6,7 @@ export class PosterDto {
 	subtitle;
 
 	constructor(data: IMainPosterItem) {
-		this.id = data._id;
+		this.id = data._id + "/||" + data.tablePriority;
 		this.title = data.quote[0].character + " • " + data.quote[0].anime;
 		this.subtitle = data.quote[0].quote;
 	}

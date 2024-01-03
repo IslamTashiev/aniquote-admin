@@ -92,7 +92,7 @@ const MainCarouselList = () => {
 					handleSubmit={handleCreateNewItem}
 				/>
 			) : (
-				<List onEdit={handleEdit} onDelete={setDeletedItemId} items={listItems} listIsLoaded={isMainPostersLoaded} />
+				<List onEdit={handleEdit} onDelete={setDeletedItemId} items={listItems} listIsLoaded={isMainPostersLoaded} showListPriority />
 			)}
 			<ConfirmModal isOpen={!!deletedItemId} message='Are you sure want delete this item' onClose={() => setDeletedItemId(null)} onConfirm={handleConfirmModal} title='Delete carousel item' />
 		</>
