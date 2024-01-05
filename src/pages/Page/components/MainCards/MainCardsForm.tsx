@@ -1,10 +1,10 @@
 import React, { FC, useState } from "react";
 import DropdownWithCheckbox from "../MainCarousel/DropdownWithCheckbox";
-import { IFile } from "../MainCarousel/CarouselForm";
 import AddIcon from "@assets/add-admin.svg";
 import { ICardRequest } from "@models/cards";
 import { uploadFiles } from "@utils/uploadAndGetFile";
 import { usePagesStore } from "@store/pagesStore/pagesStore";
+import { ImageData } from "@models/image";
 
 interface MainCardsFormProps {
 	checkboxValues: string[];
@@ -19,7 +19,7 @@ const MainCardsForm: FC<MainCardsFormProps> = (props) => {
 	const { checkboxValues, formData, selectedValue, setCheckboxValues, setSelectedValue, handleSubmit } = props;
 	const { titles } = usePagesStore((state) => state);
 
-	const [animeBckg, setAnimeBckg] = useState<IFile>({ file: null, warning: null });
+	const [animeBckg, setAnimeBckg] = useState<ImageData>({ file: null, warning: null });
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];

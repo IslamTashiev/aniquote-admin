@@ -1,8 +1,8 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase/config";
-import { IFile } from "../pages/Page/components/MainCarousel/CarouselForm";
+import { ImageData } from "@models/image";
 
-export const uploadFiles = async (uploaded: IFile) => {
+export const uploadFiles = async (uploaded: ImageData) => {
 	let uploadedUrl: string | null = null;
 	if (uploaded.file) {
 		const storageRef = ref(storage, `images/${uploaded.file.name}`);
