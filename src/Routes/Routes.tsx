@@ -7,6 +7,7 @@ import React from "react";
 import Home from "../pages/Home";
 import Page from "../pages/Page";
 import Quotes from "../pages/Quotes";
+import Images from "../pages/Images";
 
 const Routes = () => {
 	const { isAuthenticated, user } = useUserStore((state) => state);
@@ -26,6 +27,7 @@ const Routes = () => {
 			<Route path='/' element={renderPageWithLayout(<Home />)} />
 			<Route path='/pages' element={renderPageWithLayout(<Page />)} />
 			<Route path='/quotes' element={renderPageWithLayout(<Quotes />)} />
+			<Route path='/galary' element={renderPageWithLayout(<Images />)} />
 		</ReoutesLib>
 	);
 };

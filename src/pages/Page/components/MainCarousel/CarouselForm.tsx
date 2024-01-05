@@ -3,11 +3,7 @@ import DropdownWithCheckbox from "./DropdownWithCheckbox";
 import AddIcon from "@assets/add-admin.svg";
 import { IMainPosterItemRequest } from "@models/mainCarousel";
 import { uploadFiles } from "@utils/uploadAndGetFile";
-
-export type IFile = {
-	file: File | null;
-	warning: string | null;
-};
+import { ImageData } from "@models/image";
 
 interface CarouselFormProps {
 	checkboxValues: string[];
@@ -20,8 +16,8 @@ interface CarouselFormProps {
 
 const CarouselForm: FC<CarouselFormProps> = (props) => {
 	const { checkboxValues, formData, selectedValue, setCheckboxValues, setSelectedValue, handleSubmit } = props;
-	const [posterBackground, setPosterBackground] = useState<IFile>({ file: null, warning: null });
-	const [titleLogo, setTitleLogo] = useState<IFile>({ file: null, warning: null });
+	const [posterBackground, setPosterBackground] = useState<ImageData>({ file: null, warning: null });
+	const [titleLogo, setTitleLogo] = useState<ImageData>({ file: null, warning: null });
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];

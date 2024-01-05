@@ -6,12 +6,14 @@ import { useUserStore } from "../../store/userStore/userStore";
 import PagesIcon from "@assets/sidebar-page.svg";
 import QuotesIcon from "@assets/sidebar-quotes.svg";
 import StatsIcon from "@assets/sidebar-stats.svg";
+import GalaryIcon from "@assets/galary.svg";
 import LogoutIcon from "@assets/logout.svg";
 
 const listItems = [
 	{ title: "Pages", icon: <PagesIcon />, path: "/pages" },
 	{ title: "Quotes", icon: <QuotesIcon />, path: "/quotes" },
 	{ title: "Statistic", icon: <StatsIcon />, path: "/statistic" },
+	{ title: "Images", icon: <GalaryIcon />, path: "/galary" },
 ];
 
 const Sidebar: React.FC = () => {
