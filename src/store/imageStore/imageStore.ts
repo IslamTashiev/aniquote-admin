@@ -11,7 +11,7 @@ interface IUseImageStore {
 	imageUploaded: boolean;
 	getImages: () => void;
 	getImageById: (id: string) => void;
-	deleteImage: (id: string) => void;
+	deleteImage: (id: string, imageUrl: string) => void;
 	uploadImage: (image: ImageData, alt: string, title: string) => void;
 }
 
@@ -31,8 +31,8 @@ export const useImageStore = create<IUseImageStore>((set, get) => ({
 		const image = await imageActions.getImageById(id);
 		set({ image, isImageLoaded: true });
 	},
-	deleteImage: async (id: string) => {
-		await imageActions.deleteImage(id);
+	deleteImage: async (id: string, imageUrl: string) => {
+		await imageActions.deleteImage(id, imageUrl);
 		get().getImages();
 	},
 	uploadImage: async (image: ImageData, alt: string, title: string) => {

@@ -30,7 +30,6 @@ const ImageForm: FC<ImageFormProps> = ({ setShowForm }) => {
 		event.preventDefault();
 		if (imageData.file) {
 			uploadImage(imageData, alt, title);
-			setShowForm(false);
 		}
 	};
 
@@ -39,11 +38,11 @@ const ImageForm: FC<ImageFormProps> = ({ setShowForm }) => {
 			<div>
 				<label>
 					<span className='block mb-1 font-medium'>Enter image title</span>
-					<input value={alt} onChange={(e) => setAlt(e.target.value)} type='text' placeholder='Title' className='w-full border border-gray-300 rounded-lg px-4 py-2 mb-2 focus:outline-blue-500' />
+					<input value={title} onChange={(e) => setTitle(e.target.value)} type='text' placeholder='Title' className='w-full border border-gray-300 rounded-lg px-4 py-2 mb-2 focus:outline-blue-500' />
 				</label>
 				<label>
 					<span className='block mb-1 font-medium'>Enter image alt</span>
-					<input value={title} onChange={(e) => setTitle(e.target.value)} type='text' placeholder='Alt' className='w-full border border-gray-300 rounded-lg px-4 py-2 mb-2 focus:outline-blue-500' />
+					<input value={alt} onChange={(e) => setAlt(e.target.value)} type='text' placeholder='Alt' className='w-full border border-gray-300 rounded-lg px-4 py-2 mb-2 focus:outline-blue-500' />
 				</label>
 			</div>
 			<label>
