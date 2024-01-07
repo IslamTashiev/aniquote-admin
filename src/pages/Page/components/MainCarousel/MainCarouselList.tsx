@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import ConfirmModal from "@components/ConfirmModal";
 import CarouselForm from "./CarouselForm";
 import { PosterDto } from "../../../../dtos/posterDto";
+import { useImageStore } from "@store/imageStore/imageStore";
 
 const MainCarouselList = () => {
 	const [listItems, setListItems] = useState<IMainCarouselItemDto[]>([]);
@@ -23,6 +24,7 @@ const MainCarouselList = () => {
 	});
 
 	const { isMainPostersLoaded, createNewPoster, getPosters, mainPosters, deletePoster, updatePoster } = usePagesStore((state) => state);
+	const { getImages } = useImageStore((state) => state);
 
 	const handleConfirmModal = () => {
 		deletePoster(deletedItemId ?? "");
@@ -72,7 +74,8 @@ const MainCarouselList = () => {
 
 	useEffect(() => {
 		getPosters();
-	}, [getPosters]);
+		getImages();
+	}, [getPosters, getImages]);
 	useEffect(() => {
 		if (mainPosters) {
 			setListItems(mainPosters.map((item) => new PosterDto(item)));
